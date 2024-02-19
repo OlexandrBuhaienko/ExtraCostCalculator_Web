@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Cost Calculator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Project Cost Calculator</h2>
+    <form>
+        <div class="form-group">
+            <label for="baseCost">Project Base Cost:</label>
+            <input type="text" class="form-control" id="baseCost" placeholder="Enter base cost">
+        </div>
+
+        <!-- Deadline Multiplier -->
+        <div class="form-group">
+            <label for="deadlineMultiplier">Deadline Multiplier:</label>
+            <select class="form-control" id="deadlineMultiplier">
+                <option>Flexible</option>
+                <option>x2</option>
+                <option>x3</option>
+            </select>
+        </div>
+
+        <!-- SOW -->
+        <div class="form-group">
+            <label for="sow">SOW:</label>
+            <select class="form-control" id="sow">
+                <option>Ok</option>
+                <option>Perfect</option>
+                <option>Not as per example</option>
+            </select>
+        </div>
+
+        <!-- Revisions -->
+        <div class="form-group">
+            <label>Revisions:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="revisions" id="threeRounds" value="3 rounds" checked>
+                <label class="form-check-label" for="threeRounds">3 rounds</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="revisions" id="moreRounds" value="More">
+                <label class="form-check-label" for="moreRounds">More</label>
+            </div>
+        </div>
+
+        <!-- Discounts -->
+        <div class="form-group">
+            <label>Discounts:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="discounts" id="discount12" value="12%">
+                <label class="form-check-label" for="discount12">12%</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="discounts" id="discount24" value="24%">
+                <label class="form-check-label" for="discount24">24%</label>
+            </div>
+        </div>
+
+        <!-- Fixed Extras -->
+        <div class="form-group">
+            <label for="fixedExtras">Fixed Extras:</label>
+            <input type="text" class="form-control" id="fixedExtras" placeholder="Fixed amount">
+        </div>
+
+        <!-- Variable Extras -->
+        <div class="form-group">
+            <label for="variableExtras">Variable Extras (% of project):</label>
+            <input type="text" class="form-control" id="variableExtras" placeholder="% of project">
+        </div>
+
+        <!-- Payment Term Risks -->
+        <div class="form-group">
+            <label for="paymentTerms">Payment Term Risks:</label>
+            <select class="form-control" id="paymentTerms">
+                <option>NET30</option>
+                <option>NET60</option>
+                <option>None</option>
+            </select>
+        </div>
+
+        <!-- Calculate Button and Result Label -->
+        <div class="d-flex justify-content-end align-items-center">
+            <span class="result-label">Result:</span>
+            <button type="button" class="btn btn-primary ml-2" id="calculateBtn">Calculate result</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

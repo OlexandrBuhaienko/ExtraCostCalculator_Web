@@ -1,0 +1,13 @@
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control, .btn, .form-check-label {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.result-label {
+    font-weight: bold;
+    margin-right: 10px;
+}
