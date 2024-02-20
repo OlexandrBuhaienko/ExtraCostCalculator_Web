@@ -8,10 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
         checkBaseCost();
     });
     document.getElementById('addVariableExtra').addEventListener('click', addVariableExtraField);
+    document.getElementById('btnCalculateBaseCost').addEventListener('click', baseCostCalculationPageRedirection);
 });
 let lastCheckedRadio = null;
 
 
+
+function baseCostCalculationPageRedirection(){
+    window.location.href = "./BaseCostPage/calculate-base-cost.html"
+}
 // function calculateResult() {
 //     const baseCost = parseFloat(document.getElementById('baseCost').value) || 0;
 //     const deadlineMultiplier = document.getElementById('deadlineMultiplier').value;
