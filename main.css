@@ -43,6 +43,6 @@
 
 #tlHoursInput,
 #tlRateInput,
-#tlPercentInput {
-    margin-left: -1.3%; /* Або будь-яке інше значення, яке працює для вашої макету */
+#tlPercentageInput {
+    margin-left: -1.3%;
 }

@@ -1,16 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
     const projectTypeSelect = document.getElementById('projectType');
-    const complexitySelect = document.getElementById('complexity'); // Переконайтеся, що є елемент з цим id
-    const additionalOptionsContainer = document.createElement('div'); // Будемо створювати новий контейнер
+    const complexitySelect = document.getElementById('complexity');
+    const additionalInputsContainer = document.getElementById('additionalInputsContainer');
+    const additionalViewSelect = document.getElementById('additionalViewSelect');
+    const additionalOptionSelect = document.getElementById('additionalOptionSelect');
+    const animationInputContainer = document.getElementById('animationInputContainer');
+    const btnAddView = document.getElementById('btnAdditionalView');
+    const btnAddOption = document.getElementById('btnAdditionalOption');
+    
 
     projectTypeSelect.addEventListener('change', function() {
-        updateComplexityOptions(projectTypeSelect.value);
-        updateAdditionalOptions(projectTypeSelect.value);
+        updateOptions(projectTypeSelect.value);
+        updateAnimationInput(projectTypeSelect.value);
+        
     });
 
-    function updateComplexityOptions(projectType) {
+
+
+    function updateOptions(projectType) {
         const isModeling = projectType === 'Modeling' || projectType === 'AR Modeling';
-        complexitySelect.innerHTML = ''; // Очищаємо опції
+        complexitySelect.innerHTML = ''; 
         const options = isModeling 
             ? ['Simple', 'Medium', 'Complex', 'Ultra Complex']
             : ['Simple', 'Medium', 'Complex'];
@@ -32,27 +41,53 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }
     }
-
-    function updateAdditionalOptions(projectType) {
-        additionalOptionsContainer.innerHTML = ''; // Очищуємо контейнер
+    function updateAnimationInput(projectType) {
+        animationInputContainer.innerHTML = ''; // Очищуємо контейнер
 
         if (projectType === 'Animation') {
             const secondsInput = document.createElement('input');
             secondsInput.type = 'number';
             secondsInput.id = 'animationSeconds';
             secondsInput.placeholder = 'Enter number of seconds';
-            secondsInput.className = 'form-control';
-            additionalOptionsContainer.appendChild(secondsInput);
+            secondsInput.className = 'form-control mt-3';
+            animationInputContainer.appendChild(secondsInput);
+            btnAddOption.style.display = 'none';
+            btnAddView.style.display = 'none';
+
+        }
+        else{
+            btnAddOption.style.display = 'block';
+            btnAddView.style.display = 'block';
+        }
+        // Додаємо контейнер до DOM, якщо він ще не доданий
+        if (!secondsInputContainer.parentNode) {
+            projectTypeSelect.parentNode.insertBefore(animationInputContainer, projectTypeSelect.nextSibling);
         }
 
-        // Додаємо контейнер до DOM, якщо він ще не доданий
-        if (!additionalOptionsContainer.parentNode) {
-            projectTypeSelect.parentNode.insertBefore(additionalOptionsContainer, projectTypeSelect.nextSibling);
-        }
     }
+
+    btnAddView.addEventListener('click', function() {
+        additionalViewSelect.innerHTML= '';
+        const options = ['Additional render(existing space)', 'Ratio change', 'Zoom In', 'Zoom Out(up to 20%)', 
+    'Opposite elevation', 'Side elevation'];
+    options.forEach(option => {
+        const opt = document.createElement('option');
+        opt.value = option.toLowerCase().replace(/\s+/g, '_');
+        opt.textContent = option;
+        additionalViewSelect.appendChild(opt);
+    });
+
+    });
+    
+    btnAddOption.addEventListener('click', function() {
+       // additionalOptionSelect.style.display = 'block';
+    });
 });
 
+
+
+
 function calculateCost() {
-    // Тут ваша логіка для обчислення вартості
+   
 }
  

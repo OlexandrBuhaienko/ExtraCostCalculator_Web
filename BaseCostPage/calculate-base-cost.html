@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Base Cost Calculator</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./calculateBaseCost.css">
+    <link rel="icon" type="image/png" href="../resources/favicon.jpg">
+
 </head>
 <body>
     <div class="container mt-5">
         <h2>Base Cost Calculator</h2>
         <form>
             <div class="form-group">
-                <label for="projectType">Project Type</label>
+
+                <label for="projectType" class="mt-3">Project Type</label>
+                
                 <select class="form-control" id="projectType">
                     <option>Interior</option>
                     <option>Exterior</option>
@@ -20,7 +25,8 @@
                     <option>Animation</option>
                 </select>
 
-                <label for="projectType">Complexity</label>
+                <label for="projectType" class="mt-3" id="complexityLabel">Complexity</label>
+
                 <select class="form-control" id="complexity">
                     <option>Simple</option>
                     <option>Medium</option>
@@ -28,21 +34,42 @@
                     <option>Ultra Complex</option>
                 </select>
 
-                <div class="form-group" id="additionalInputsContainer">
-                    <!-- Additional inputs will be appended here by JavaScript -->
-                </div>
+                <div id="animationInputContainer"></div>
+
+            </div>
+        <div class="d-flex align-items-top">
+
+
+            
+
+            <div class="form-group btn-group-vertical col-2" role="group" aria-label="Additional Actions">
+                <button id="btnAdditionalView" class="btn btn-primary mt-3 rounded">Add View</button>
+                <button id="btnAdditionalOption" class="btn btn-primary mt-3 rounded">Add Option</button>
+                <button id="" type="button" class="btn btn-primary mt-3 rounded fixed-width-btn" onclick="calculateCost()">Calculate Cost</button>
+            </div>
+            <div class="form-group col-3 row-1 mt-3" id="additionalInputsContainer">
                 
-                <div class="form-group" id="additionalOptionsContainer">
+                <select class="form-control" id="additionalViewSelect">
+                    <option>Additional render(existing space)</option>
+                    <option>Ratio change</option>
+                    <option>Zoom In</option>
+                    <option>Zoom Out(up to 20%)</option>
+                    <option>Opposite elevation</option>
+                    <option>Side elevation</option>
+                </select>
 
-                </div>
+                <select class="form-control mt-3" id="additionalOptionSelect">
+                    <option>Props</option>
+                    <option>Colors</option>
+                    <option>Finishes</option>
+                    <option>Lighting</option>
+                    <option>Landscape</option>
+                    <option>Architecture</option>
+                    <option>Hi-res</option>
+                </select>
+            </div>
 
-            </div>
-            <div class="form-group">
-               <button id="btnAdditionalView" class="btn btn-primary mt-3">Add View</button>
-               <button id="btnAdditionalOption" class="btn btn-primary mt-3">Add Option</button>
-            </div>
-           
-            <button id="" type="button" class="btn btn-primary" onclick="calculateCost()">Calculate Cost</button>
+        </div>      
         </form>
         <div id="result" class="mt-3">Total Cost: </div>
     </div>

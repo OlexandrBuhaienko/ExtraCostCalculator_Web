@@ -17,74 +17,6 @@ let lastCheckedRadio = null;
 function baseCostCalculationPageRedirection(){
     window.location.href = "./BaseCostPage/calculate-base-cost.html"
 }
-// function calculateResult() {
-//     const baseCost = parseFloat(document.getElementById('baseCost').value) || 0;
-//     const deadlineMultiplier = document.getElementById('deadlineMultiplier').value;
-//     const sow = document.getElementById('sow').value;
-//     const revisions = document.querySelector('input[name="revisions"]:checked').value;
-//     const discounts = document.querySelector('input[name="discounts"]:checked') ? document.querySelector('input[name="discounts"]:checked').value : '0%';
-//     const fixedExtras = parseFloat(document.getElementById('fixedExtras').value) || 0;
-//     //const variableExtras = parseFloat(document.getElementById('variableExtras').value) || 0;
-//     const paymentTerms = document.getElementById('paymentTerms').value;
-
-//     let finalCost = baseCost;
-
-//     // Deadline Multiplier
-//     switch (deadlineMultiplier) {
-//         case 'x2':
-//             finalCost += baseCost * 0.3;
-//             break;
-//         case 'x3':
-//             finalCost += baseCost * 0.6;
-//             break;
-//         // No default case needed for 'Flexible'
-//     }
-
-//     // SOW
-//     switch (sow) {
-//         case 'Perfect':
-//             finalCost -= baseCost * 0.1;
-//             break;
-//         case 'Not as per example':
-//             finalCost += baseCost * 0.1;
-//             break;
-//         // No default case needed for 'Ok'
-//     }
-
-//     // Revisions
-//     if (revisions === 'More') {
-//         finalCost += baseCost * 0.1;
-//     }
-
-//     // Discounts
-//     const discountRate = parseFloat(discounts) / 100;
-//     finalCost *= (1 - discountRate);
-
-//     // Fixed Extras
-//     finalCost += fixedExtras;
-
-//     // Variable Extras
-//     let variableExtras = Array.from(document.querySelectorAll('#variableExtrasContainer input')).map(input => parseFloat(input.value) || 0);
-//     let variableExtrasSum;
-    
-//     variableExtrasSum = variableExtras.reduce((accumulator, currentValue) => {
-//     return accumulator + currentValue;}, 0); // 0 - початкове значення акумулятора
-
-//     finalCost += (baseCost * (variableExtrasSum / 100));
-
-//     // Payment Term Risks
-//     switch (paymentTerms) {
-//         case 'NET30':
-//             finalCost += baseCost * 0.03;
-//             break;
-//         case 'NET60':
-//             finalCost += baseCost * 0.06;
-//             break;
-//         // No default case needed for 'None'
-//     }
-//     document.querySelector('.result-label').innerText = `Result: ${finalCost.toFixed(2)}`;
-// }
-
 
 function calculateDeadlineMultiplier(baseCost, multiplier) {
     switch (multiplier) {
@@ -123,8 +55,8 @@ function calculateVariableExtras(baseCost) {
     return sum;
 }
 
-function calculateTeamLeadCost() {
-const tlPercentage = (parseFloat(document.getElementById('tlPercentInput').value) / 100) || 0;
+function calculateTeamLeadCost(baseCost) {
+const tlPercentage = (parseFloat(document.getElementById('tlPercentageInput').value) / 100) || 0;
 const tlHours = parseFloat(document.getElementById('tlHoursInput').value) || 0;
 const tlRate = parseFloat(document.getElementById('tlRateInput').value) || 0;
 
@@ -132,7 +64,7 @@ const tlRate = parseFloat(document.getElementById('tlRateInput').value) || 0;
     if (document.getElementById('tlConsulting').checked && tlHours > 0 && tlRate > 0) {
         return tlHours * tlRate;
     } else if (document.getElementById('tlPercentage').checked && tlPercentage > 0) {
-        return baseCost * tlPercent;
+        return baseCost * tlPercentage;
     }
     return 0;
 }
@@ -173,7 +105,7 @@ function calculateTotalCost() {
     finalCost -= calculateDiscount(baseCost, discounts);
     finalCost += calculateFixedExtras(fixedExtras);
     finalCost += calculateVariableExtras(baseCost);
-    finalCost += calculateTeamLeadCost();
+    finalCost += calculateTeamLeadCost(baseCost);
     finalCost += calculatePMCost();
     finalCost += calculatePaymentTermRisks(baseCost, paymentTerms);
 
