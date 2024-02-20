@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Cost Calculator</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
 </head>
 
 <body>
@@ -64,7 +64,31 @@
                     <label class="form-check-label" for="discount24">24%</label>
                 </div>
             </div>
+            <!-- Team Lead Options -->
+            <div class="form-group">
+                <label>Team Lead:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="teamLeadOption" id="tlConsulting"
+                        value="consulting">
+                    <label class="form-check-label" for="tlConsulting">TL Consulting</label>
+                    <input type="text" id="tlHoursInput" class="form-control mt-1" placeholder="TL Hours">
+                    <input type="text" id="tlRateInput" class="form-control mt-1" placeholder="TL Rate">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="teamLeadOption" id="tlPercentage"
+                        value="percentage">
+                    <label class="form-check-label" for="tlPercentage">TL Percentage</label>
+                    <input type="text" id="tlPercentInput" class="form-control mt-1" placeholder="Percentage">
+                </div>
+            </div>
 
+            <!-- Project Manager (PM) -->
+            <div class="form-group">
+                <label for="pmHours">PM Hours:</label>
+                <input type="text" id="pmHours" class="form-control" placeholder="PM Hours">
+                <label for="pmRate">PM Rate:</label>
+                <input type="text" id="pmRate" class="form-control" placeholder="PM Rate">
+            </div>
             <!-- Fixed Extras -->
             <div class="form-group">
                 <label for="fixedExtras">Fixed Extras:</label>
@@ -84,10 +108,10 @@
             <div class="form-group">
                 <label for="paymentTerms">Payment Term Risks:</label>
                 <select class="form-control" id="paymentTerms">
-                    <option>NET30</option>
-                    <option>NET60</option>
-                    <option>None</option>
-                </select>
+                    <option value="none">None</option>
+                    <option value="net30">NET30</option>
+                    <option value="net60">NET60</option>
+                </select>                
             </div>
 
             <!-- Calculate Button and Result Label -->
