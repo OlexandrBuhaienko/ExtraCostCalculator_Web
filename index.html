@@ -14,6 +14,7 @@
     <div class="container mt-5">
         <h2>Project Cost Calculator</h2>
         <form>
+            <!-- Base -->
             <div class="form-group">
                 <label for="baseCost">Project Base Cost:</label>
                 <div class="input-group">
@@ -24,17 +25,6 @@
                 </div>
 
             </div>
-
-            <!-- Deadline Multiplier -->
-            <div class="form-group">
-                <label for="deadlineMultiplier">Deadline Multiplier:</label>
-                <select class="form-control" id="deadlineMultiplier">
-                    <option>Flexible</option>
-                    <option>x2</option>
-                    <option>x3</option>
-                </select>
-            </div>
-
             <!-- SOW -->
             <div class="form-group">
                 <label for="sow">SOW:</label>
@@ -44,7 +34,6 @@
                     <option>Not as per example</option>
                 </select>
             </div>
-
             <!-- Revisions -->
             <div class="form-group">
                 <label>Revisions:</label>
@@ -58,21 +47,8 @@
                     <label class="form-check-label" for="moreRounds">More</label>
                 </div>
             </div>
-
-            <!-- Discounts -->
-            <div class="form-group">
-                <label>Discounts:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="discounts" id="discount12" value="12%">
-                    <label class="form-check-label" for="discount12">12%</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="discounts" id="discount24" value="24%">
-                    <label class="form-check-label" for="discount24">24%</label>
-                </div>
-            </div>
-            <!-- Team Lead Options -->
-            <div class="form-group">
+             <!-- Team Lead Options -->
+             <div class="form-group">
                 <label>Team Lead:</label>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="teamLeadOption" id="tlConsulting"
@@ -88,14 +64,6 @@
                     <input type="text" id="tlPercentageInput" class="form-control mt-1" placeholder="Percentage">
                 </div>
             </div>
-
-            <!-- Project Manager (PM) -->
-            <div class="form-group">
-                <label for="pmHours">PM Hours:</label>
-                <input type="text" id="pmHours" class="form-control" placeholder="PM Hours">
-                <label for="pmRate">PM Rate:</label>
-                <input type="text" id="pmRate" class="form-control" placeholder="PM Rate">
-            </div>
             <!-- Fixed Extras -->
             <div class="form-group">
                 <label for="fixedExtras">Fixed Extras:</label>
@@ -110,9 +78,24 @@
                 </div>
                 <button type="button" id="addVariableExtra" class="btn btn-link mt-2">+ Add Variable Extra</button>
             </div>
-
-            <!-- Payment Term Risks -->
+            <!-- Project Manager (PM) -->
             <div class="form-group">
+                <label for="pmHours">PM Hours:</label>
+                <input type="text" id="pmHours" class="form-control" placeholder="PM Hours">
+                <label for="pmRate">PM Rate:</label>
+                <input type="text" id="pmRate" class="form-control" placeholder="PM Rate">
+            </div>
+            <!-- Deadline Multiplier -->
+            <div class="form-group">
+                <label for="deadlineMultiplier">Deadline Multiplier:</label>
+                <select class="form-control" id="deadlineMultiplier">
+                    <option>Flexible</option>
+                    <option>x2</option>
+                    <option>x3</option>
+                </select>
+            </div>
+             <!-- Payment Term Risks -->
+             <div class="form-group">
                 <label for="paymentTerms">Payment Term Risks:</label>
                 <select class="form-control" id="paymentTerms">
                     <option value="none">None</option>
@@ -120,6 +103,21 @@
                     <option value="net60">NET60</option>
                 </select>                
             </div>
+            <!-- Discounts -->
+            <div class="form-group">
+                <label>Discounts:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="discounts" id="discount12" value="12%">
+                    <label class="form-check-label" for="discount12">12%</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="discounts" id="discount24" value="24%">
+                    <label class="form-check-label" for="discount24">24%</label>
+                </div>
+            </div>
+            
+
+           
 
             <!-- Calculate Button and Result Label -->
             <div class="d-flex justify-content-end align-items-center">
