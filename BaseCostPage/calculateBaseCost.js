@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+  //Declaring all constants which will be using to get an access to the objects inside the HTML
   const projectTypeSelect = document.getElementById("projectType");
   const complexitySelect = document.getElementById("complexity");
-  const additionalViewContainer = document.getElementById("additionalViewContainer");
-  const additionalOptionContainer = document.getElementById("additionalOptionContainer");
+  const complexityLabel = document.getElementById("complexityLabel");
   const radioButtonInputContainer = document.getElementById(
     "radioButtonInputContainer"
   );
@@ -10,45 +10,104 @@ document.addEventListener("DOMContentLoaded", function () {
     "animationInputContainer"
   );
   const btnAdditionalView = document.getElementById("btnAdditionalView");
-  btnAdditionalView.addEventListener("click", btnAddViewOnClick);
   const btnAdditionalOption = document.getElementById("btnAdditionalOption");
+  //Adding event Listeners for objects in HTML
+  btnAdditionalView.addEventListener("click", btnAddViewOnClick);
   btnAdditionalOption.addEventListener("click", btnAddOptionOnClick);
-  updateRadioInput(projectType.value);
-  projectTypeSelect.addEventListener("change", function () {
+  //Adding event listener to the calculation button and assigning here the method which will handle this behavior
+  //after clicking on this button
+  const btnCalculateBaseCost = document.getElementById("btnCalculateBaseCost");
+  btnCalculateBaseCost.addEventListener("click", calculateBaseCost);
+  //Declaring default behavior after changing dropdown list input for project Type
+projectTypeSelect.addEventListener("change", function () {
     updateOptions(projectTypeSelect.value);
     updateAnimationInput(projectTypeSelect.value);
     updateRadioInput(projectTypeSelect.value);
   });
+  //Updating options in the projectType input after changing selection
+function updateOptions(projectType) {
+    const elements = document.querySelectorAll(".container > *"); // Вибираємо всі дочірні елементи контейнера
+    elements.forEach(function (element) {
+      element.style.display = "block";
+    });
+    complexityLabel.textContent="Complexity";
 
-  function updateOptions(projectType) {
     const isModeling =
       projectType === "Modeling" || projectType === "AR Modeling";
     complexitySelect.innerHTML = "";
     const options = isModeling
       ? ["Simple", "Medium", "Complex", "Ultra Complex"]
       : ["Simple", "Medium", "Complex"];
-
+  
     options.forEach((option) => {
       const opt = document.createElement("option");
       opt.value = option.toLowerCase().replace(/\s+/g, "_");
       opt.textContent = option;
       complexitySelect.appendChild(opt);
     });
-
-    if (projectType === "Animation") {
-      complexitySelect.innerHTML = `
-                <option value="promo">Promo Animation</option>
-                <option value="vfx">VFX Animation</option>
-                <option value="installation">Installation Animation</option>
-                <option value="architectural">Architectural Animation</option>
-                <option value="motion">Motion Design</option>
-            `;
+  
+    switch (projectType) {
+      case "Animation": {
+        complexitySelect.innerHTML = `
+                  <option value="promo">Promo Animation</option>
+                  <option value="vfx">VFX Animation</option>
+                  <option value="installation">Installation Animation</option>
+                  <option value="architectural">Architectural Animation</option>
+                  <option value="motion">Motion Design</option>
+              `;
+        break;
+      }
+      case "Texture/Material Creation": {
+        complexitySelect.innerHTML = `
+                      <option value="simple">Simple</option>
+                      <option value="complex">Complex</option>
+                      `;
+        break;
+      }
+      case "Template Lifestyle": {
+        complexitySelect.style.display = "none";
+        complexityLabel.style.display = "none";
+        break;
+      }
+      case "Silo": {
+        complexitySelect.style.display = "none";
+        complexityLabel.style.display = "none";
+        break;
+      }
+      case "360 view (60 images)": {
+        complexitySelect.style.display = "none";
+        complexityLabel.style.display = "none";
+        break;
+      }
+      case "People Adding":{
+          complexityLabel.textContent="Number";
+          complexitySelect.innerHTML=`
+          <option value="1-2 people">1-2 people</option>
+          <option value="3-5 people">3-5 people</option>
+          <option value="6-10 people">6-10 people</option>
+          <option value="custom">People Custom (hourly rate)</option>
+          `;
+          break;
+      }
+      case "Other": {
+        complexityLabel.textContent="Other Services";
+          complexitySelect.innerHTML=`
+          <option value="motion design">Motion Design</option>
+          <option value="floor plan 3d">Floor Plan 3D</option>
+          <option value="dollhouse">Dollhouse </option>
+          <option value="virtual tour">Virtual Tour</option>
+          <option value="mood board">Mood board</option>
+          <option value="post-production">Post-production</option>
+          <option value="print design">Print Design</option>
+          `;
+          break;
+      }
     }
   }
-
-  function updateAnimationInput(projectType) {
+  //Updating animation input after changing option in the projectType input
+function updateAnimationInput(projectType) {
     animationInputContainer.innerHTML = ""; // Очищуємо контейнер
-
+  
     if (projectType === "Animation") {
       const secondsInput = document.createElement("input");
       secondsInput.type = "number";
@@ -56,23 +115,23 @@ document.addEventListener("DOMContentLoaded", function () {
       secondsInput.placeholder = "Enter number of seconds";
       secondsInput.className = "form-control mt-3";
       animationInputContainer.appendChild(secondsInput);
-      btnAddOption.style.display = "none";
-      btnAddView.style.display = "none";
+      btnAdditionalOption.style.display = "none";
+      btnAdditionalView.style.display = "none";
     } else {
-      btnAddOption.style.display = "block";
-      btnAddView.style.display = "block";
+      btnAdditionalOption.style.display = "block";
+      btnAdditionalView.style.display = "block";
     }
     // Додаємо контейнер до DOM, якщо він ще не доданий
     // if (!secondsInputContainer.parentNode) {
     //     projectTypeSelect.parentNode.insertBefore(animationInputContainer, projectTypeSelect.nextSibling);
     // }
   }
-
+  //Updating RadioButton input after changing option in the projectType input
   function updateRadioInput(projectType) {
     const radioWrapper = document.createElement("div");
     radioWrapper.classList.add("form-check");
     radioButtonInputContainer.innerHTML = "";
-
+  
     if (projectType === "Interior" || projectType === "Exterior") {
       const residentialRadio = document.createElement("input");
       residentialRadio.type = "radio";
@@ -80,12 +139,12 @@ document.addEventListener("DOMContentLoaded", function () {
       residentialRadio.name = "propertyType";
       residentialRadio.value = "Residential";
       residentialRadio.classList.add("form-check-input");
-
+  
       const residentialLabel = document.createElement("label");
       residentialLabel.htmlFor = "residential";
       residentialLabel.textContent = "Residential";
       residentialLabel.classList.add("form-check-label");
-
+  
       // Створюємо і додаємо RadioButton для Commercial
       const commercialRadio = document.createElement("input");
       commercialRadio.type = "radio";
@@ -93,33 +152,32 @@ document.addEventListener("DOMContentLoaded", function () {
       commercialRadio.name = "propertyType";
       commercialRadio.value = "Commercial";
       commercialRadio.classList.add("form-check-input");
-
+  
       const commercialLabel = document.createElement("label");
       commercialLabel.htmlFor = "commercial";
       commercialLabel.textContent = "Commercial";
       commercialLabel.classList.add("form-check-label");
-
+  
       let wrapperClone = radioWrapper.cloneNode(); // Клонуємо обгортку для другої кнопки
       radioWrapper.appendChild(residentialRadio);
       radioWrapper.appendChild(residentialLabel);
       radioButtonInputContainer.appendChild(radioWrapper);
-
+  
       // Додаємо другу радіокнопку до клонованої обгортки і потім обгортку до контейнера
       wrapperClone.appendChild(commercialRadio);
       wrapperClone.appendChild(commercialLabel);
       radioButtonInputContainer.appendChild(wrapperClone);
     }
   }
+});
 
-  const btnCalculateBaseCost = document.getElementById("btnCalculateBaseCost");
-  btnCalculateBaseCost.addEventListener("click", calculateBaseCost);
-  });
 
-  function btnAddOptionOnClick (event) {
-    event.preventDefault();
-    var newSelect = document.createElement('select');
-        newSelect.className = 'form-control mt-3';
-        newSelect.innerHTML = `
+
+function btnAddOptionOnClick(event) {
+  event.preventDefault();
+  var newSelect = document.createElement("select");
+  newSelect.className = "form-control mt-3";
+  newSelect.innerHTML = `
             <option>Props</option>
             <option>Colors</option>
             <option>Finishes</option>
@@ -128,13 +186,13 @@ document.addEventListener("DOMContentLoaded", function () {
             <option>Architecture</option>
             <option>Hi-res</option>
         `;
-        additionalOptionContainer.appendChild(newSelect);
-  };
- function btnAddViewOnClick(event) {
-    event.preventDefault();
-    var newSelect = document.createElement('select');
-        newSelect.className = 'form-control mt-3';
-        newSelect.innerHTML = `
+  additionalOptionContainer.appendChild(newSelect);
+}
+function btnAddViewOnClick(event) {
+  event.preventDefault();
+  var newSelect = document.createElement("select");
+  newSelect.className = "form-control mt-3";
+  newSelect.innerHTML = `
             <option>Additional render(existing space)</option>
             <option>Ratio change</option>
             <option>Zoom In</option>
@@ -142,8 +200,8 @@ document.addEventListener("DOMContentLoaded", function () {
             <option>Opposite elevation</option>
             <option>Side elevation</option>
         `;
-        additionalViewContainer.appendChild(newSelect);
-    };
+  additionalViewContainer.appendChild(newSelect);
+}
 async function fetchXlsxData() {
   try {
     const response = await fetch("../data/Prices.xlsx");
@@ -172,7 +230,7 @@ async function getCostByName(itemName) {
 }
 
 async function calculateBaseCost() {
-    let totalCost = 0;
+  let totalCost = 0;
   try {
     const cost = await getCostByName("Simple Residential Exterior");
     console.log(cost);
@@ -180,6 +238,6 @@ async function calculateBaseCost() {
   } catch (error) {
     console.error("Error in calculateBaseCost: ", error);
   }
-  
+
   document.getElementById("result").textContent = `Total Cost: $${totalCost}`;
 }
