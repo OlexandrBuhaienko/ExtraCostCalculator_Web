@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   //Declaring all constants which will be using to get an access to the objects inside the HTML
-  const projectTypeSelect = document.getElementById("projectType");
-  const complexitySelect = document.getElementById("complexity");
+  const projectTypeSelect = document.getElementById('projectTypeSelect');
+  const complexitySelect = document.getElementById("complexitySelect");
   const complexityLabel = document.getElementById("complexityLabel");
   const radioButtonInputContainer = document.getElementById(
     "radioButtonInputContainer"
@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   const btnAdditionalView = document.getElementById("btnAdditionalView");
   const btnAdditionalOption = document.getElementById("btnAdditionalOption");
+
   //Adding event Listeners for objects in HTML
   btnAdditionalView.addEventListener("click", btnAddViewOnClick);
   btnAdditionalOption.addEventListener("click", btnAddOptionOnClick);
@@ -19,13 +20,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnCalculateBaseCost = document.getElementById("btnCalculateBaseCost");
   btnCalculateBaseCost.addEventListener("click", calculateBaseCost);
   //Declaring default behavior after changing dropdown list input for project Type
-projectTypeSelect.addEventListener("change", function () {
+  projectTypeSelect.addEventListener("change", function () {
+    updateOptions(projectTypeSelect.value);
+    updateAnimationInput(projectTypeSelect.value);
+    updateRadioInput(projectTypeSelect.value);
+  });
+  complexitySelect.addEventListener("change", function () {
     updateOptions(projectTypeSelect.value);
     updateAnimationInput(projectTypeSelect.value);
     updateRadioInput(projectTypeSelect.value);
   });
   //Updating options in the projectType input after changing selection
-function updateOptions(projectType) {
+
+  function updateOptions(projectType) {
     const elements = document.querySelectorAll(".container > *"); // Вибираємо всі дочірні елементи контейнера
     elements.forEach(function (element) {
       element.style.display = "block";
@@ -121,12 +128,7 @@ function updateAnimationInput(projectType) {
       btnAdditionalOption.style.display = "block";
       btnAdditionalView.style.display = "block";
     }
-    // Додаємо контейнер до DOM, якщо він ще не доданий
-    // if (!secondsInputContainer.parentNode) {
-    //     projectTypeSelect.parentNode.insertBefore(animationInputContainer, projectTypeSelect.nextSibling);
-    // }
   }
-  //Updating RadioButton input after changing option in the projectType input
   function updateRadioInput(projectType) {
     const radioWrapper = document.createElement("div");
     radioWrapper.classList.add("form-check");
@@ -166,12 +168,66 @@ function updateAnimationInput(projectType) {
       // Додаємо другу радіокнопку до клонованої обгортки і потім обгортку до контейнера
       wrapperClone.appendChild(commercialRadio);
       wrapperClone.appendChild(commercialLabel);
+
       radioButtonInputContainer.appendChild(wrapperClone);
+
     }
   }
 });
 
+async function calculateBaseCost() {
+  let totalCost = 0;
+  const projectType = projectTypeSelect.value;
+  const complexity = complexitySelect.options[complexitySelect.selectedIndex].text;
+  const propertyType = document.querySelector('input[name="propertyType"]:checked')?.value;
 
+  if(projectType === "Exterior" || projectType === "Interior")
+  {
+    let baseItemName = `${complexity} ${propertyType} ${projectType}`;
+    try {
+      const baseCost = await getCostByName(baseItemName);
+      if (typeof baseCost === 'number') { // Ensuring that the cost is number
+        totalCost += baseCost;
+      } else {
+        console.error(baseCost); // Logging error
+      }
+    } catch (error) {
+      console.error("Error in calculateBaseCost: ", error);
+    }
+  }
+  else if(projectType === "Other" && ( complexity === "Dollhouse" || complexity === "Floor Plan 3D"))
+  {
+    let baseItemName = `${complexity} ${propertyType} ${projectType}`;
+    try {
+      const baseCost = await getCostByName(baseItemName);
+      if (typeof baseCost === 'number') { // Ensuring that the cost is number
+        totalCost += baseCost;
+      } else {
+        console.error(baseCost); // Logging error
+      }
+    } catch (error) {
+      console.error("Error in calculateBaseCost: ", error);
+    }
+  }
+  else {
+    let baseItemName = `${complexity} ${projectType}`;
+    try {
+      const baseCost = await getCostByName(baseItemName);
+      if (typeof baseCost === 'number') { // Ensuring that the cost is number
+        totalCost += baseCost;
+      } else {
+        console.error(baseCost); // Logging error
+      }
+    } catch (error) {
+      console.error("Error in calculateBaseCost: ", error);
+    }
+  }
+  
+
+  // Додайте логіку для врахування додаткових опцій та в'ю, якщо потрібно
+
+  document.getElementById("result").textContent = `Total Cost: $${totalCost}`;
+}
 
 function btnAddOptionOnClick(event) {
   event.preventDefault();
@@ -229,15 +285,4 @@ async function getCostByName(itemName) {
   }
 }
 
-async function calculateBaseCost() {
-  let totalCost = 0;
-  try {
-    const cost = await getCostByName("Simple Residential Exterior");
-    console.log(cost);
-    totalCost += cost;
-  } catch (error) {
-    console.error("Error in calculateBaseCost: ", error);
-  }
 
-  document.getElementById("result").textContent = `Total Cost: $${totalCost}`;
-}
