@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   //Declaring all constants which will be using to get an access to the objects inside the HTML
-  const projectTypeSelect = document.getElementById('projectTypeSelect');
+  const projectTypeSelect = document.getElementById("projectTypeSelect");
   const complexitySelect = document.getElementById("complexitySelect");
   const complexityLabel = document.getElementById("complexityLabel");
   const radioButtonInputContainer = document.getElementById(
@@ -21,38 +21,44 @@ document.addEventListener("DOMContentLoaded", function () {
   btnCalculateBaseCost.addEventListener("click", calculateBaseCost);
   //Declaring default behavior after changing dropdown list input for project Type
   projectTypeSelect.addEventListener("change", function () {
-    updateOptions(projectTypeSelect.value);
+    //updateOptions(projectTypeSelect.value);
+    updateProjectType(projectTypeSelect.value);
     updateAnimationInput(projectTypeSelect.value);
     updateRadioInput(projectTypeSelect.value);
   });
   complexitySelect.addEventListener("change", function () {
-    updateOptions(projectTypeSelect.value);
+    //updateOptions(projectTypeSelect.value);
+    updateComplexityOptions(projectTypeSelect.value);
     updateAnimationInput(projectTypeSelect.value);
     updateRadioInput(projectTypeSelect.value);
   });
   //Updating options in the projectType input after changing selection
 
-  function updateOptions(projectType) {
+  function updateProjectType(projectType) {
     const elements = document.querySelectorAll(".container > *"); // Вибираємо всі дочірні елементи контейнера
     elements.forEach(function (element) {
       element.style.display = "block";
     });
-    complexityLabel.textContent="Complexity";
 
-    const isModeling =
-      projectType === "Modeling" || projectType === "AR Modeling";
+    updateComplexityOptions(projectType);
+
+    // const isModeling =
+    //   projectType === "Modeling" || projectType === "AR Modeling";
+    // complexitySelect.innerHTML = "";
+    // const options = isModeling
+    //   ? ["Simple", "Medium", "Complex", "Ultra Complex"]
+    //   : ["Simple", "Medium", "Complex"];
+
+    // options.forEach((option) => {
+    //   const opt = document.createElement("option");
+    //   opt.value = option.toLowerCase().replace(/\s+/g, "_");
+    //   opt.textContent = option;
+    //   complexitySelect.appendChild(opt);
+    // });
+  }
+
+  function updateComplexityOptions(projectType) {
     complexitySelect.innerHTML = "";
-    const options = isModeling
-      ? ["Simple", "Medium", "Complex", "Ultra Complex"]
-      : ["Simple", "Medium", "Complex"];
-  
-    options.forEach((option) => {
-      const opt = document.createElement("option");
-      opt.value = option.toLowerCase().replace(/\s+/g, "_");
-      opt.textContent = option;
-      complexitySelect.appendChild(opt);
-    });
-  
     switch (projectType) {
       case "Animation": {
         complexitySelect.innerHTML = `
@@ -86,19 +92,19 @@ document.addEventListener("DOMContentLoaded", function () {
         complexityLabel.style.display = "none";
         break;
       }
-      case "People Adding":{
-          complexityLabel.textContent="Number";
-          complexitySelect.innerHTML=`
+      case "People Adding": {
+        complexityLabel.textContent = "Number";
+        complexitySelect.innerHTML = `
           <option value="1-2 people">1-2 people</option>
           <option value="3-5 people">3-5 people</option>
           <option value="6-10 people">6-10 people</option>
           <option value="custom">People Custom (hourly rate)</option>
           `;
-          break;
+        break;
       }
       case "Other": {
-        complexityLabel.textContent="Other Services";
-          complexitySelect.innerHTML=`
+        complexityLabel.textContent = "Other Services";
+        complexitySelect.innerHTML = `
           <option value="motion design">Motion Design</option>
           <option value="floor plan 3d">Floor Plan 3D</option>
           <option value="dollhouse">Dollhouse </option>
@@ -107,14 +113,30 @@ document.addEventListener("DOMContentLoaded", function () {
           <option value="post-production">Post-production</option>
           <option value="print design">Print Design</option>
           `;
-          break;
+        return;
+      }
+      default: {
+        const isModeling =
+          projectType === "Modeling" || projectType === "AR Modeling";
+        complexitySelect.innerHTML = "";
+        options = isModeling
+          ? ["Simple", "Medium", "Complex", "Ultra Complex"]
+          : ["Simple", "Medium", "Complex"];
+        break;
       }
     }
+    options.forEach((option) => {
+      const opt = document.createElement("option");
+      opt.value = option.toLowerCase().replace(/\s+/g, "_");
+      opt.textContent = option;
+      complexitySelect.appendChild(opt);
+    });
   }
+
   //Updating animation input after changing option in the projectType input
-function updateAnimationInput(projectType) {
+  function updateAnimationInput(projectType) {
     animationInputContainer.innerHTML = ""; // Очищуємо контейнер
-  
+
     if (projectType === "Animation") {
       const secondsInput = document.createElement("input");
       secondsInput.type = "number";
@@ -133,7 +155,7 @@ function updateAnimationInput(projectType) {
     const radioWrapper = document.createElement("div");
     radioWrapper.classList.add("form-check");
     radioButtonInputContainer.innerHTML = "";
-  
+
     if (projectType === "Interior" || projectType === "Exterior") {
       const residentialRadio = document.createElement("input");
       residentialRadio.type = "radio";
@@ -141,12 +163,12 @@ function updateAnimationInput(projectType) {
       residentialRadio.name = "propertyType";
       residentialRadio.value = "Residential";
       residentialRadio.classList.add("form-check-input");
-  
+
       const residentialLabel = document.createElement("label");
       residentialLabel.htmlFor = "residential";
       residentialLabel.textContent = "Residential";
       residentialLabel.classList.add("form-check-label");
-  
+
       // Створюємо і додаємо RadioButton для Commercial
       const commercialRadio = document.createElement("input");
       commercialRadio.type = "radio";
@@ -154,23 +176,22 @@ function updateAnimationInput(projectType) {
       commercialRadio.name = "propertyType";
       commercialRadio.value = "Commercial";
       commercialRadio.classList.add("form-check-input");
-  
+
       const commercialLabel = document.createElement("label");
       commercialLabel.htmlFor = "commercial";
       commercialLabel.textContent = "Commercial";
       commercialLabel.classList.add("form-check-label");
-  
+
       let wrapperClone = radioWrapper.cloneNode(); // Клонуємо обгортку для другої кнопки
       radioWrapper.appendChild(residentialRadio);
       radioWrapper.appendChild(residentialLabel);
       radioButtonInputContainer.appendChild(radioWrapper);
-  
+
       // Додаємо другу радіокнопку до клонованої обгортки і потім обгортку до контейнера
       wrapperClone.appendChild(commercialRadio);
       wrapperClone.appendChild(commercialLabel);
 
       radioButtonInputContainer.appendChild(wrapperClone);
-
     }
   }
 });
@@ -178,15 +199,18 @@ function updateAnimationInput(projectType) {
 async function calculateBaseCost() {
   let totalCost = 0;
   const projectType = projectTypeSelect.value;
-  const complexity = complexitySelect.options[complexitySelect.selectedIndex].text;
-  const propertyType = document.querySelector('input[name="propertyType"]:checked')?.value;
+  const complexity =
+    complexitySelect.options[complexitySelect.selectedIndex].text;
+  const propertyType = document.querySelector(
+    'input[name="propertyType"]:checked'
+  )?.value;
 
-  if(projectType === "Exterior" || projectType === "Interior")
-  {
+  if (projectType === "Exterior" || projectType === "Interior") {
     let baseItemName = `${complexity} ${propertyType} ${projectType}`;
     try {
       const baseCost = await getCostByName(baseItemName);
-      if (typeof baseCost === 'number') { // Ensuring that the cost is number
+      if (typeof baseCost === "number") {
+        // Ensuring that the cost is number
         totalCost += baseCost;
       } else {
         console.error(baseCost); // Logging error
@@ -194,13 +218,15 @@ async function calculateBaseCost() {
     } catch (error) {
       console.error("Error in calculateBaseCost: ", error);
     }
-  }
-  else if(projectType === "Other" && ( complexity === "Dollhouse" || complexity === "Floor Plan 3D"))
-  {
+  } else if (
+    projectType === "Other" &&
+    (complexity === "Dollhouse" || complexity === "Floor Plan 3D")
+  ) {
     let baseItemName = `${complexity} ${propertyType} ${projectType}`;
     try {
       const baseCost = await getCostByName(baseItemName);
-      if (typeof baseCost === 'number') { // Ensuring that the cost is number
+      if (typeof baseCost === "number") {
+        // Ensuring that the cost is number
         totalCost += baseCost;
       } else {
         console.error(baseCost); // Logging error
@@ -208,12 +234,12 @@ async function calculateBaseCost() {
     } catch (error) {
       console.error("Error in calculateBaseCost: ", error);
     }
-  }
-  else {
+  } else {
     let baseItemName = `${complexity} ${projectType}`;
     try {
       const baseCost = await getCostByName(baseItemName);
-      if (typeof baseCost === 'number') { // Ensuring that the cost is number
+      if (typeof baseCost === "number") {
+        // Ensuring that the cost is number
         totalCost += baseCost;
       } else {
         console.error(baseCost); // Logging error
@@ -222,7 +248,6 @@ async function calculateBaseCost() {
       console.error("Error in calculateBaseCost: ", error);
     }
   }
-  
 
   // Додайте логіку для врахування додаткових опцій та в'ю, якщо потрібно
 
@@ -284,5 +309,3 @@ async function getCostByName(itemName) {
     console.error("Error in calculateBaseCost: ", error);
   }
 }
-
-
