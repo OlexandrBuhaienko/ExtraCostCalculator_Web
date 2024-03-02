@@ -27,8 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateRadioInput(projectTypeSelect.value);
   });
   complexitySelect.addEventListener("change", function () {
-    //updateOptions(projectTypeSelect.value);
-    updateComplexityOptions(projectTypeSelect.value);
+   // updateComplexityOptions(projectTypeSelect.value);
     updateAnimationInput(projectTypeSelect.value);
     updateRadioInput(projectTypeSelect.value);
   });
@@ -57,81 +56,160 @@ document.addEventListener("DOMContentLoaded", function () {
     // });
   }
 
+  // function updateComplexityOptions(projectType) {
+  //   complexitySelect.innerHTML = '';
+  //   switch (projectType) {
+  //     case "Animation": {
+  //       complexitySelect.innerHTML = `
+  //                 <option value="promo">Promo Animation</option>
+  //                 <option value="vfx">VFX Animation</option>
+  //                 <option value="installation">Installation Animation</option>
+  //                 <option value="architectural">Architectural Animation</option>
+  //                 <option value="motion">Motion Design</option>
+  //             `;
+  //       break;
+  //     }
+  //     case "Texture/Material Creation": {
+  //       complexitySelect.innerHTML = `
+  //                     <option value="simple">Simple</option>
+  //                     <option value="complex">Complex</option>
+  //                     `;
+  //       break;
+  //     }
+  //     case "Template Lifestyle": {
+  //       complexitySelect.style.display = "none";
+  //       complexityLabel.style.display = "none";
+  //       break;
+  //     }
+  //     case "Silo": {
+  //       complexitySelect.style.display = "none";
+  //       complexityLabel.style.display = "none";
+  //       break;
+  //     }
+  //     case "360 view (60 images)": {
+  //       complexitySelect.style.display = "none";
+  //       complexityLabel.style.display = "none";
+  //       break;
+  //     }
+  //     case "People Adding": {
+  //       complexityLabel.textContent = "Number";
+  //       complexitySelect.innerHTML = `
+  //         <option value="1-2 people">1-2 people</option>
+  //         <option value="3-5 people">3-5 people</option>
+  //         <option value="6-10 people">6-10 people</option>
+  //         <option value="custom">People Custom (hourly rate)</option>
+  //         `;
+  //       break;
+  //     }
+  //     case "Other": {
+  //       complexityLabel.textContent = "Other Services";
+  //       complexitySelect.innerHTML = `
+  //         <option value="motion design">Motion Design</option>
+  //         <option value="floor plan 3d">Floor Plan 3D</option>
+  //         <option value="dollhouse">Dollhouse </option>
+  //         <option value="virtual tour">Virtual Tour</option>
+  //         <option value="mood board">Mood board</option>
+  //         <option value="post-production">Post-production</option>
+  //         <option value="print design">Print Design</option>
+  //         `;
+  //       return;
+  //     }
+  //     default: {
+  //       const isModeling =
+  //         projectType === "Modeling" || projectType === "AR Modeling";
+  //       complexitySelect.innerHTML = '';
+  //       options = isModeling
+  //         ? ["Simple", "Medium", "Complex", "Ultra Complex"]
+  //         : ["Simple", "Medium", "Complex"];
+  //       break;
+  //     }
+  //   }
+  //   options.forEach((option) => {
+  //     const opt = document.createElement("option");
+  //     opt.value = option.toLowerCase().replace(/\s+/g, "_");
+  //     opt.textContent = option;
+  //     complexitySelect.appendChild(opt);
+  //   });
+  // }
+
   function updateComplexityOptions(projectType) {
-    complexitySelect.innerHTML = "";
+    complexitySelect.innerHTML = ''; // Спочатку очищаємо вміст
+    let options = []; // Ініціалізуємо масив опцій тут, щоб він був доступний у всій функції
+
     switch (projectType) {
       case "Animation": {
-        complexitySelect.innerHTML = `
-                  <option value="promo">Promo Animation</option>
-                  <option value="vfx">VFX Animation</option>
-                  <option value="installation">Installation Animation</option>
-                  <option value="architectural">Architectural Animation</option>
-                  <option value="motion">Motion Design</option>
-              `;
-        break;
-      }
-      case "Texture/Material Creation": {
-        complexitySelect.innerHTML = `
-                      <option value="simple">Simple</option>
-                      <option value="complex">Complex</option>
-                      `;
-        break;
-      }
-      case "Template Lifestyle": {
-        complexitySelect.style.display = "none";
-        complexityLabel.style.display = "none";
-        break;
-      }
-      case "Silo": {
-        complexitySelect.style.display = "none";
-        complexityLabel.style.display = "none";
-        break;
-      }
-      case "360 view (60 images)": {
-        complexitySelect.style.display = "none";
-        complexityLabel.style.display = "none";
-        break;
-      }
-      case "People Adding": {
-        complexityLabel.textContent = "Number";
-        complexitySelect.innerHTML = `
-          <option value="1-2 people">1-2 people</option>
-          <option value="3-5 people">3-5 people</option>
-          <option value="6-10 people">6-10 people</option>
-          <option value="custom">People Custom (hourly rate)</option>
-          `;
-        break;
-      }
-      case "Other": {
-        complexityLabel.textContent = "Other Services";
-        complexitySelect.innerHTML = `
-          <option value="motion design">Motion Design</option>
-          <option value="floor plan 3d">Floor Plan 3D</option>
-          <option value="dollhouse">Dollhouse </option>
-          <option value="virtual tour">Virtual Tour</option>
-          <option value="mood board">Mood board</option>
-          <option value="post-production">Post-production</option>
-          <option value="print design">Print Design</option>
-          `;
-        return;
-      }
+            complexitySelect.innerHTML = `
+                        <option value="promo">Promo Animation</option>
+                        <option value="vfx">VFX Animation</option>
+                        <option value="installation">Installation Animation</option>
+                        <option value="architectural">Architectural Animation</option>
+                        <option value="motion">Motion Design</option>
+                    `;
+              break;
+            }
+            case "Texture/Material Creation": {
+              complexitySelect.innerHTML = `
+                            <option value="simple">Simple</option>
+                            <option value="complex">Complex</option>
+                            `;
+              break;
+            }
+            case "Template Lifestyle": {
+              complexitySelect.style.display = "none";
+              complexityLabel.style.display = "none";
+              break;
+            }
+            case "Silo": {
+              complexitySelect.style.display = "none";
+              complexityLabel.style.display = "none";
+              break;
+            }
+            case "360 view (60 images)": {
+              complexitySelect.style.display = "none";
+              complexityLabel.style.display = "none";
+              break;
+            }
+            case "People Adding": {
+              complexityLabel.textContent = "Number";
+              complexitySelect.innerHTML = `
+                <option value="1-2 people">1-2 people</option>
+                <option value="3-5 people">3-5 people</option>
+                <option value="6-10 people">6-10 people</option>
+                <option value="custom">People Custom (hourly rate)</option>
+                `;
+              break;
+            }
+            case "Other": {
+              complexityLabel.textContent = "Other Services";
+              complexitySelect.innerHTML = `
+                <option value="motion design">Motion Design</option>
+                <option value="floor plan 3d">Floor Plan 3D</option>
+                <option value="dollhouse">Dollhouse </option>
+                <option value="virtual tour">Virtual Tour</option>
+                <option value="mood board">Mood board</option>
+                <option value="post-production">Post-production</option>
+                <option value="print design">Print Design</option>
+                `;
+              return;
+            }
       default: {
-        const isModeling =
-          projectType === "Modeling" || projectType === "AR Modeling";
-        complexitySelect.innerHTML = "";
+        const isModeling = projectType === "Modeling" || projectType === "AR Modeling";
         options = isModeling
           ? ["Simple", "Medium", "Complex", "Ultra Complex"]
           : ["Simple", "Medium", "Complex"];
-        break;
       }
     }
-    options.forEach((option) => {
+
+    // Тепер використовуємо змінну options для додавання елементів у select
+    options.forEach(option => {
+      const value = typeof option === 'string' ? option.toLowerCase().replace(/\s+/g, "_") : option.value;
+      const text = typeof option === 'string' ? option : option.text;
       const opt = document.createElement("option");
-      opt.value = option.toLowerCase().replace(/\s+/g, "_");
-      opt.textContent = option;
+      opt.value = value;
+      opt.textContent = text;
       complexitySelect.appendChild(opt);
     });
-  }
+}
 
   //Updating animation input after changing option in the projectType input
   function updateAnimationInput(projectType) {
