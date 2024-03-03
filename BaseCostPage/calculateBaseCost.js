@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const animationInputContainer = document.getElementById(
     "animationInputContainer"
   );
+  const peopleCustomInputContainer = document.getElementById(
+    "peopleCustomInputContainer"
+  );
   const btnAdditionalView = document.getElementById("btnAdditionalView");
   const btnAdditionalOption = document.getElementById("btnAdditionalOption");
 
@@ -27,7 +30,10 @@ document.addEventListener("DOMContentLoaded", function () {
     updateRadioInput(projectTypeSelect.value);
   });
   complexitySelect.addEventListener("change", function () {
-   // updateComplexityOptions(projectTypeSelect.value);
+    // updateComplexityOptions(projectTypeSelect.value);
+    if (peopleCustomInputContainer.value === "custom") {
+      peopleCustomSelected();
+    }
     updateAnimationInput(projectTypeSelect.value);
     updateRadioInput(projectTypeSelect.value);
   });
@@ -40,176 +46,90 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     updateComplexityOptions(projectType);
-
-    // const isModeling =
-    //   projectType === "Modeling" || projectType === "AR Modeling";
-    // complexitySelect.innerHTML = "";
-    // const options = isModeling
-    //   ? ["Simple", "Medium", "Complex", "Ultra Complex"]
-    //   : ["Simple", "Medium", "Complex"];
-
-    // options.forEach((option) => {
-    //   const opt = document.createElement("option");
-    //   opt.value = option.toLowerCase().replace(/\s+/g, "_");
-    //   opt.textContent = option;
-    //   complexitySelect.appendChild(opt);
-    // });
   }
-
-  // function updateComplexityOptions(projectType) {
-  //   complexitySelect.innerHTML = '';
-  //   switch (projectType) {
-  //     case "Animation": {
-  //       complexitySelect.innerHTML = `
-  //                 <option value="promo">Promo Animation</option>
-  //                 <option value="vfx">VFX Animation</option>
-  //                 <option value="installation">Installation Animation</option>
-  //                 <option value="architectural">Architectural Animation</option>
-  //                 <option value="motion">Motion Design</option>
-  //             `;
-  //       break;
-  //     }
-  //     case "Texture/Material Creation": {
-  //       complexitySelect.innerHTML = `
-  //                     <option value="simple">Simple</option>
-  //                     <option value="complex">Complex</option>
-  //                     `;
-  //       break;
-  //     }
-  //     case "Template Lifestyle": {
-  //       complexitySelect.style.display = "none";
-  //       complexityLabel.style.display = "none";
-  //       break;
-  //     }
-  //     case "Silo": {
-  //       complexitySelect.style.display = "none";
-  //       complexityLabel.style.display = "none";
-  //       break;
-  //     }
-  //     case "360 view (60 images)": {
-  //       complexitySelect.style.display = "none";
-  //       complexityLabel.style.display = "none";
-  //       break;
-  //     }
-  //     case "People Adding": {
-  //       complexityLabel.textContent = "Number";
-  //       complexitySelect.innerHTML = `
-  //         <option value="1-2 people">1-2 people</option>
-  //         <option value="3-5 people">3-5 people</option>
-  //         <option value="6-10 people">6-10 people</option>
-  //         <option value="custom">People Custom (hourly rate)</option>
-  //         `;
-  //       break;
-  //     }
-  //     case "Other": {
-  //       complexityLabel.textContent = "Other Services";
-  //       complexitySelect.innerHTML = `
-  //         <option value="motion design">Motion Design</option>
-  //         <option value="floor plan 3d">Floor Plan 3D</option>
-  //         <option value="dollhouse">Dollhouse </option>
-  //         <option value="virtual tour">Virtual Tour</option>
-  //         <option value="mood board">Mood board</option>
-  //         <option value="post-production">Post-production</option>
-  //         <option value="print design">Print Design</option>
-  //         `;
-  //       return;
-  //     }
-  //     default: {
-  //       const isModeling =
-  //         projectType === "Modeling" || projectType === "AR Modeling";
-  //       complexitySelect.innerHTML = '';
-  //       options = isModeling
-  //         ? ["Simple", "Medium", "Complex", "Ultra Complex"]
-  //         : ["Simple", "Medium", "Complex"];
-  //       break;
-  //     }
-  //   }
-  //   options.forEach((option) => {
-  //     const opt = document.createElement("option");
-  //     opt.value = option.toLowerCase().replace(/\s+/g, "_");
-  //     opt.textContent = option;
-  //     complexitySelect.appendChild(opt);
-  //   });
-  // }
-
   function updateComplexityOptions(projectType) {
-    complexitySelect.innerHTML = ''; // Спочатку очищаємо вміст
+    complexitySelect.innerHTML = ""; // Спочатку очищаємо вміст
     let options = []; // Ініціалізуємо масив опцій тут, щоб він був доступний у всій функції
 
     switch (projectType) {
       case "Animation": {
-            complexitySelect.innerHTML = `
-                        <option value="promo">Promo Animation</option>
-                        <option value="vfx">VFX Animation</option>
-                        <option value="installation">Installation Animation</option>
-                        <option value="architectural">Architectural Animation</option>
-                        <option value="motion">Motion Design</option>
-                    `;
-              break;
-            }
-            case "Texture/Material Creation": {
-              complexitySelect.innerHTML = `
-                            <option value="simple">Simple</option>
-                            <option value="complex">Complex</option>
-                            `;
-              break;
-            }
-            case "Template Lifestyle": {
-              complexitySelect.style.display = "none";
-              complexityLabel.style.display = "none";
-              break;
-            }
-            case "Silo": {
-              complexitySelect.style.display = "none";
-              complexityLabel.style.display = "none";
-              break;
-            }
-            case "360 view (60 images)": {
-              complexitySelect.style.display = "none";
-              complexityLabel.style.display = "none";
-              break;
-            }
-            case "People Adding": {
-              complexityLabel.textContent = "Number";
-              complexitySelect.innerHTML = `
-                <option value="1-2 people">1-2 people</option>
-                <option value="3-5 people">3-5 people</option>
-                <option value="6-10 people">6-10 people</option>
-                <option value="custom">People Custom (hourly rate)</option>
-                `;
-              break;
-            }
-            case "Other": {
-              complexityLabel.textContent = "Other Services";
-              complexitySelect.innerHTML = `
-                <option value="motion design">Motion Design</option>
-                <option value="floor plan 3d">Floor Plan 3D</option>
-                <option value="dollhouse">Dollhouse </option>
-                <option value="virtual tour">Virtual Tour</option>
-                <option value="mood board">Mood board</option>
-                <option value="post-production">Post-production</option>
-                <option value="print design">Print Design</option>
-                `;
-              return;
-            }
+        options = [
+          { value: "promo", text: "Promo Animation" },
+          { value: "vfx", text: "VFX Animation" },
+          { value: "installation", text: "Installation Animation" },
+          { value: "architectural", text: "Architectural Animation" },
+          { value: "motion", text: "Motion Design" },
+        ];
+        break;
+      }
+      case "Texture/Material Creation": {
+        options = [
+          { value: "simple", text: "Simple" },
+          { value: "complex", text: "Complex" },
+        ];
+        break;
+      }
+      case "Template Lifestyle": {
+        complexitySelect.style.display = "none";
+        complexityLabel.style.display = "none";
+        break;
+      }
+      case "Silo": {
+        complexitySelect.style.display = "none";
+        complexityLabel.style.display = "none";
+        break;
+      }
+      case "360 view (60 images)": {
+        complexitySelect.style.display = "none";
+        complexityLabel.style.display = "none";
+        break;
+      }
+      case "People Adding": {
+        complexityLabel.textContent = "Number";
+        options = [
+          { value: "1-2 people", text: "1-2 people" },
+          { value: "3-5 people", text: "3-5 people" },
+          { value: "6-10 people", text: "6-10 people" },
+          { value: "custom", text: "People Custom (hourly rate)" },
+        ];
+        break;
+      }
+      case "Other": {
+        complexityLabel.textContent = "Other Services";
+        options = [
+          { value: "motionDesign", text: "Motion Design" },
+          { value: "floorPlan3D", text: "Floor Plan 3D" },
+          { value: "dollhouse", text: "Dollhouse" },
+          { value: "virtualTour", text: "Virtual Tour" },
+          { value: "moodBoard", text: "Mood Board" },
+          { value: "postProduction", text: "Post-Production" },
+          { value: "printDesign", text: "Print Design" },
+        ];
+        break;
+      }
       default: {
-        const isModeling = projectType === "Modeling" || projectType === "AR Modeling";
+        const isModeling =
+          projectType === "Modeling" || projectType === "AR Modeling";
         options = isModeling
           ? ["Simple", "Medium", "Complex", "Ultra Complex"]
           : ["Simple", "Medium", "Complex"];
       }
     }
 
+    peopleCustomInputContainer.style.display = "none";
     // Тепер використовуємо змінну options для додавання елементів у select
-    options.forEach(option => {
-      const value = typeof option === 'string' ? option.toLowerCase().replace(/\s+/g, "_") : option.value;
-      const text = typeof option === 'string' ? option : option.text;
+    options.forEach((option) => {
+      const value =
+        typeof option === "string"
+          ? option.toLowerCase().replace(/\s+/g, "_")
+          : option.value;
+      const text = typeof option === "string" ? option : option.text;
       const opt = document.createElement("option");
       opt.value = value;
       opt.textContent = text;
       complexitySelect.appendChild(opt);
     });
-}
+  }
 
   //Updating animation input after changing option in the projectType input
   function updateAnimationInput(projectType) {
@@ -234,7 +154,11 @@ document.addEventListener("DOMContentLoaded", function () {
     radioWrapper.classList.add("form-check");
     radioButtonInputContainer.innerHTML = "";
 
-    if (projectType === "Interior" || projectType === "Exterior") {
+    if (
+      projectType === "Interior" ||
+      projectType === "Exterior" ||
+      (projectType === "Other" && complexitySelect.value === "dollhouse")
+    ) {
       const residentialRadio = document.createElement("input");
       residentialRadio.type = "radio";
       residentialRadio.id = "residential";
@@ -270,6 +194,37 @@ document.addEventListener("DOMContentLoaded", function () {
       wrapperClone.appendChild(commercialLabel);
 
       radioButtonInputContainer.appendChild(wrapperClone);
+    }
+  }
+  function peopleCustomSelected() {
+    //Creating the first text field
+    const inputHourRate = document.createElement("input");
+    inputHourRate.type = "text";
+    inputHourRate.classList.add("mt-3");
+    inputHourRate.placeholder = "Hour Rate";
+    inputHourRate.style.opacity = "0.5"; // Setting half opacity
+    inputHourRate.oninput = function () {
+      validatePositiveNumber(inputHourRate);
+    };
+
+    //Creating the second text field
+    const inputHours = document.createElement("input");
+    inputHours.type = "text";
+    inputHours.classList.add("mt-3");
+    inputHours.placeholder = "Hours";
+    inputHours.style.opacity = "0.5"; // Setting half opacity
+    inputHours.oninput = function () {
+      validatePositiveNumber(inputHours);
+    };
+    peopleCustomInputContainer.appendChild(inputHourRate);
+    peopleCustomInputContainer.appendChild(inputHours);
+  }
+  function validatePositiveNumber(input) {
+    const value = input.value;
+    const valid =
+      /^\d*\.?\d*$/.test(value) && (value === "" || parseFloat(value) > 0);
+    if (!valid) {
+      input.value = value.substring(0, value.length - 1);
     }
   }
 });
