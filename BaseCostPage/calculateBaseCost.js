@@ -33,8 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // updateComplexityOptions(projectTypeSelect.value);
     if (complexitySelect.value === "custom") {
       peopleCustomSelected();
-    }
-    else {
+    } else {
       peopleCustomInputContainer.innerHTML = "";
     }
     updateAnimationInput(projectTypeSelect.value);
@@ -50,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateComplexityOptions(projectType);
   }
+
   function updateComplexityOptions(projectType) {
     complexitySelect.innerHTML = ""; // Спочатку очищаємо вміст
     let options = []; // Ініціалізуємо масив опцій тут, щоб він був доступний у всій функції
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
           { value: "vfx", text: "VFX Animation" },
           { value: "installation", text: "Installation Animation" },
           { value: "architectural", text: "Architectural Animation" },
-          {value: "motionDesign", text: "Motion Design"}
+          { value: "motionDesign", text: "Motion Design" },
         ];
         break;
       }
@@ -132,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
       complexitySelect.appendChild(opt);
     });
   }
-
   //Updating animation input after changing option in the projectType input
   function updateAnimationInput(projectType) {
     animationInputContainer.innerHTML = ""; // Очищуємо контейнер
@@ -202,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
       radioButtonInputContainer.appendChild(wrapperClone);
     }
   }
+
   function peopleCustomSelected() {
     //Creating the first text field
     if (complexitySelect.value === "custom") {
@@ -226,6 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
       peopleCustomInputContainer.appendChild(inputHours);
     }
   }
+
   function validatePositiveNumber(input) {
     const value = input.value;
     const valid =
@@ -236,17 +237,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-async function calculateBaseCost() {
+async function calculateBaseCost(event) {
+  event.preventDefault();
   let totalCost = 0;
   const projectType = projectTypeSelect.value;
   const complexity =
     complexitySelect.options[complexitySelect.selectedIndex].text;
+
   const propertyType = document.querySelector(
     'input[name="propertyType"]:checked'
   )?.value;
 
   if (projectType === "Exterior" || projectType === "Interior") {
     let baseItemName = `${complexity} ${propertyType} ${projectType}`;
+
     try {
       const baseCost = await getCostByName(baseItemName);
       if (typeof baseCost === "number") {
@@ -261,7 +265,6 @@ async function calculateBaseCost() {
   } else if (projectType === "Modeling" || projectType === "AR Modeling") {
     let baseItemName = `${complexity} ${projectType}`;
     try {
-    
       const baseCost = await getCostByName(baseItemName);
       if (typeof baseCost === "number") {
         // Ensuring that the cost is number
@@ -272,26 +275,29 @@ async function calculateBaseCost() {
     } catch (error) {
       console.error("Error in calculateBaseCost: ", error);
     }
-
-  }
-  else if (projectType === "Animation") {
+  } else if (projectType === "Animation") {
     let baseItemName = `${complexity}`;
-    const container = document.querySelector('#animationInputContainer');
-    const secondsInput = container.querySelector('#animationSeconds');
+    const container = document.querySelector("#animationInputContainer");
+    const secondsInput = container.querySelector("#animationSeconds");
+
+    if (!validateInputAndShowError(secondsInput, animationInputContainer)) {
+      // Якщо дані не пройшли валідацію, припиняємо подальше виконання функції
+      return;
+    }
+
     let numberOfSeconds = parseFloat(secondsInput.value);
     try {
       const baseCost = await getCostByName(baseItemName);
       if (typeof baseCost === "number") {
         // Ensuring that the cost is number
-        totalCost += (baseCost * numberOfSeconds);
+        totalCost += baseCost * numberOfSeconds;
       } else {
         console.error(baseCost); // Logging error
       }
     } catch (error) {
       console.error("Error in calculateBaseCost: ", error);
     }
-  }
-  else if (
+  } else if (
     projectType === "Other" &&
     (complexity === "Dollhouse" || complexity === "Floor Plan 3D")
   ) {
@@ -323,6 +329,26 @@ async function calculateBaseCost() {
   }
 
   document.getElementById("result").textContent = `Total Cost: $${totalCost}`;
+}
+
+function validateInputAndShowError(inputElement, containerElement) {
+  if (inputElement.value.trim() === "") {
+    if (!containerElement.querySelector(".error-message")) {
+      const errorMessage = document.createElement("div");
+      errorMessage.textContent = "Please don't leave the fields empty!";
+      errorMessage.classList.add("error-message");
+      errorMessage.style.color = "red";
+      containerElement.appendChild(errorMessage);
+    }
+    return false; // Повертаємо false, оскільки дані не пройшли валідацію
+  } else {
+    const existingErrorMessage =
+      containerElement.querySelector(".error-message");
+    if (existingErrorMessage) {
+      containerElement.removeChild(existingErrorMessage);
+    }
+    return true; // Повертаємо true, оскільки дані валідні
+  }
 }
 
 function btnAddOptionOnClick(event) {
