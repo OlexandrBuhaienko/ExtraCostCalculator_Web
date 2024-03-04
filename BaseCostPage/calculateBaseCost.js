@@ -31,8 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   complexitySelect.addEventListener("change", function () {
     // updateComplexityOptions(projectTypeSelect.value);
-    if (peopleCustomInputContainer.value === "custom") {
+    if (complexitySelect.value === "custom") {
       peopleCustomSelected();
+    }
+    else {
+      peopleCustomInputContainer.innerHTML = "";
     }
     updateAnimationInput(projectTypeSelect.value);
     updateRadioInput(projectTypeSelect.value);
@@ -50,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateComplexityOptions(projectType) {
     complexitySelect.innerHTML = ""; // Спочатку очищаємо вміст
     let options = []; // Ініціалізуємо масив опцій тут, щоб він був доступний у всій функції
-
+    complexityLabel.textContent = "Complexity";
     switch (projectType) {
       case "Animation": {
         options = [
@@ -58,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
           { value: "vfx", text: "VFX Animation" },
           { value: "installation", text: "Installation Animation" },
           { value: "architectural", text: "Architectural Animation" },
-          { value: "motion", text: "Motion Design" },
+          {value: "motionDesign", text: "Motion Design"}
         ];
         break;
       }
@@ -97,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
       case "Other": {
         complexityLabel.textContent = "Other Services";
         options = [
-          { value: "motionDesign", text: "Motion Design" },
           { value: "floorPlan3D", text: "Floor Plan 3D" },
           { value: "dollhouse", text: "Dollhouse" },
           { value: "virtualTour", text: "Virtual Tour" },
@@ -142,6 +144,9 @@ document.addEventListener("DOMContentLoaded", function () {
       secondsInput.placeholder = "Enter number of seconds";
       secondsInput.className = "form-control mt-3";
       animationInputContainer.appendChild(secondsInput);
+      secondsInput.oninput = function () {
+        validatePositiveNumber(this);
+      };
       btnAdditionalOption.style.display = "none";
       btnAdditionalView.style.display = "none";
     } else {
@@ -157,7 +162,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (
       projectType === "Interior" ||
       projectType === "Exterior" ||
-      (projectType === "Other" && complexitySelect.value === "dollhouse")
+      (projectType === "Other" && complexitySelect.value === "dollhouse") ||
+      (projectType === "Other" && complexitySelect.value === "floorPlan3D")
     ) {
       const residentialRadio = document.createElement("input");
       residentialRadio.type = "radio";
@@ -198,26 +204,27 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function peopleCustomSelected() {
     //Creating the first text field
-    const inputHourRate = document.createElement("input");
-    inputHourRate.type = "text";
-    inputHourRate.classList.add("mt-3");
-    inputHourRate.placeholder = "Hour Rate";
-    inputHourRate.style.opacity = "0.5"; // Setting half opacity
-    inputHourRate.oninput = function () {
-      validatePositiveNumber(inputHourRate);
-    };
-
-    //Creating the second text field
-    const inputHours = document.createElement("input");
-    inputHours.type = "text";
-    inputHours.classList.add("mt-3");
-    inputHours.placeholder = "Hours";
-    inputHours.style.opacity = "0.5"; // Setting half opacity
-    inputHours.oninput = function () {
-      validatePositiveNumber(inputHours);
-    };
-    peopleCustomInputContainer.appendChild(inputHourRate);
-    peopleCustomInputContainer.appendChild(inputHours);
+    if (complexitySelect.value === "custom") {
+      const inputHourRate = document.createElement("input");
+      inputHourRate.type = "text";
+      inputHourRate.classList.add("mt-3");
+      inputHourRate.placeholder = "Hour Rate";
+      inputHourRate.style.opacity = "0.5"; // Setting half opacity
+      inputHourRate.oninput = function () {
+        validatePositiveNumber(inputHourRate);
+      };
+      //Creating the second text field
+      const inputHours = document.createElement("input");
+      inputHours.type = "text";
+      inputHours.classList.add("mt-3");
+      inputHours.placeholder = "Hours";
+      inputHours.style.opacity = "0.5"; // Setting half opacity
+      inputHours.oninput = function () {
+        validatePositiveNumber(this);
+      };
+      peopleCustomInputContainer.appendChild(inputHourRate);
+      peopleCustomInputContainer.appendChild(inputHours);
+    }
   }
   function validatePositiveNumber(input) {
     const value = input.value;
@@ -251,11 +258,44 @@ async function calculateBaseCost() {
     } catch (error) {
       console.error("Error in calculateBaseCost: ", error);
     }
-  } else if (
+  } else if (projectType === "Modeling" || projectType === "AR Modeling") {
+    let baseItemName = `${complexity} ${projectType}`;
+    try {
+    
+      const baseCost = await getCostByName(baseItemName);
+      if (typeof baseCost === "number") {
+        // Ensuring that the cost is number
+        totalCost += baseCost;
+      } else {
+        console.error(baseCost); // Logging error
+      }
+    } catch (error) {
+      console.error("Error in calculateBaseCost: ", error);
+    }
+
+  }
+  else if (projectType === "Animation") {
+    let baseItemName = `${complexity}`;
+    const container = document.querySelector('#animationInputContainer');
+    const secondsInput = container.querySelector('#animationSeconds');
+    let numberOfSeconds = parseFloat(secondsInput.value);
+    try {
+      const baseCost = await getCostByName(baseItemName);
+      if (typeof baseCost === "number") {
+        // Ensuring that the cost is number
+        totalCost += (baseCost * numberOfSeconds);
+      } else {
+        console.error(baseCost); // Logging error
+      }
+    } catch (error) {
+      console.error("Error in calculateBaseCost: ", error);
+    }
+  }
+  else if (
     projectType === "Other" &&
     (complexity === "Dollhouse" || complexity === "Floor Plan 3D")
   ) {
-    let baseItemName = `${complexity} ${propertyType} ${projectType}`;
+    let baseItemName = `${complexity} ${propertyType}`;
     try {
       const baseCost = await getCostByName(baseItemName);
       if (typeof baseCost === "number") {
@@ -281,8 +321,6 @@ async function calculateBaseCost() {
       console.error("Error in calculateBaseCost: ", error);
     }
   }
-
-  // Додайте логіку для врахування додаткових опцій та в'ю, якщо потрібно
 
   document.getElementById("result").textContent = `Total Cost: $${totalCost}`;
 }
